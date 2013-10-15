@@ -51,7 +51,7 @@ Empties the array of its contents. It is modified in place.
 
       clear: ->
         @length = 0
-    
+
         return this
 
 >     #! example
@@ -110,7 +110,7 @@ present. The array is modified in place.
 
       remove: (object) ->
         index = @indexOf(object)
-    
+
         if index >= 0
           @splice(index, 1)[0]
         else
@@ -144,7 +144,7 @@ third argument.
         else
           for element, i in this
             iterator.call context, element, i, this
-    
+
         return this
 
 >     #! example
@@ -172,18 +172,18 @@ Call the given iterator once for each pair of objects in the array.
           a = @[i]
           j = i + 1
           i += 1
-    
+
           while j < length
             b = @[j]
             j += 1
-    
+
             iterator.call context, a, b
 
 >     #! example
 >     results = []
 >     [1, 2, 3, 4].eachPair (a, b) ->
 >       results.push [a, b]
->     
+>
 >     results
 
 ----
@@ -196,7 +196,7 @@ as the second argument. Additional arguments are passed similar to
       eachWithObject: (object, iterator, context) ->
         @each (element, i, self) ->
           iterator.call context, element, object, i, self
-    
+
         return object
 
 Call the given iterator once for each group of elements in the array,
@@ -206,17 +206,17 @@ passed as in `each`.
       eachSlice: (n, iterator, context) ->
         len = @length / n
         i = -1
-  
+
         while ++i < len
           iterator.call(context, @slice(i*n, (i+1)*n), i*n, this)
-    
+
         return this
 
 >     #! example
 >     results = []
 >     [1, 2, 3, 4].eachSlice 2, (slice) ->
 >       results.push(slice)
-> 
+>
 >     results
 
 ----
@@ -235,10 +235,10 @@ Returns a new array with the elements all shuffled up.
 
       shuffle: ->
         shuffledArray = []
-    
+
         @each (element) ->
           shuffledArray.splice(rand(shuffledArray.length + 1), 0, element)
-    
+
         return shuffledArray
 
 >     #! example
@@ -271,10 +271,10 @@ Returns an object containing the extremes of this array.
       extremes: (fn=identity) ->
         min = max = undefined
         minResult = maxResult = undefined
-    
+
         @each (object) ->
           result = fn(object)
-    
+
           if min?
             if result < minResult
               min = object
@@ -282,7 +282,7 @@ Returns an object containing the extremes of this array.
           else
             min = object
             minResult = result
-    
+
           if max?
             if result > maxResult
               max = object
@@ -290,7 +290,7 @@ Returns an object containing the extremes of this array.
           else
             max = object
             maxResult = result
-    
+
         min: min
         max: max
 
@@ -303,7 +303,7 @@ Returns an object containing the extremes of this array.
         @inject([-Infinity, []], (memo, item) ->
           value = valueFunction(item)
           [maxValue, maxItems] = memo
-    
+
           if value > maxValue
             [value, [item]]
           else if value is maxValue
@@ -311,16 +311,16 @@ Returns an object containing the extremes of this array.
           else
             memo
         ).last()
-    
+
       maximum: (valueFunction) ->
         @maxima(valueFunction).first()
-    
+
       minima: (valueFunction=identity) ->
         inverseFn = (x) ->
           -valueFunction(x)
-    
+
         @maxima(inverseFn)
-    
+
       minimum: (valueFunction) ->
         @minima(valueFunction).first()
 
@@ -333,11 +333,11 @@ is a circle.
           end = start + length
           i = start
           result = []
-    
+
           while i < end
             result.push(@[mod(i, @length)])
             i += 1
-    
+
           return result
         else
           return @[mod(start, @length)]
@@ -363,18 +363,18 @@ true, and those for which it returns false.
       partition: (iterator, context) ->
         trueCollection = []
         falseCollection = []
-    
+
         @each (element) ->
           if iterator.call(context, element)
             trueCollection.push element
           else
             falseCollection.push element
-    
+
         return [trueCollection, falseCollection]
 
 >     #! example
 >     [0..9].partition (n) ->
->       n % 2 is 0    
+>       n % 2 is 0
 
 ----
 
@@ -382,7 +382,7 @@ Return the group of elements for which the return value of the iterator is true.
 
       select: (iterator, context) ->
         return @partition(iterator, context)[0]
-  
+
 Return the group of elements that are not in the passed in set.
 
       without: (values) ->
@@ -414,7 +414,7 @@ Add all the elements in the array.
       sum: ->
         @inject 0, (sum, n) ->
           sum + n
-          
+
 >     #! example
 >     [1, 2, 3, 4].sum()
 
@@ -436,7 +436,7 @@ Produce a duplicate-free version of the array.
       unique: ->
         @inject [], (results, element) ->
           results.push element if results.indexOf(element) is -1
-    
+
           results
 
 Merges together the values of each of the arrays with the values at the corresponding position.
@@ -466,7 +466,7 @@ Helpers
 
     mod = (n, base) ->
       result = n % base
-  
+
       if result < 0 and base > 0
         result += base
 
