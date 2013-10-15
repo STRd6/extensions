@@ -1,3 +1,5 @@
+Number
+======
 
 Returns the absolute value of this number.
 

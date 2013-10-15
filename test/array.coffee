@@ -230,4 +230,3 @@ describe "Array", ->
     equals output[0][2], 7
   
     equals output[2][2], undefined
-  
