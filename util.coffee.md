@@ -11,5 +11,5 @@ Extend an object with the properties of other objects.
         for source in sources
           for name of source
             target[name] = source[name]
-      
+
         return target
