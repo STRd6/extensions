@@ -72,6 +72,12 @@
       "mode": "100644",
       "content": "Util\n====\n\nUtility methods shared in our extensions.\n\n    module.exports =\n\nExtend an object with the properties of other objects.\n\n      extend: (target, sources...) ->\n        for source in sources\n          for name of source\n            target[name] = source[name]\n\n        return target\n",
       "type": "blob"
+    },
+    "extensions.coffee.md": {
+      "path": "extensions.coffee.md",
+      "mode": "100644",
+      "content": "Extensions\n==========\n\n    require \"./array\"\n    require \"./function\"\n    require \"./number\"\n    require \"./string\"\n",
+      "type": "blob"
     }
   },
   "distribution": {
@@ -123,6 +129,11 @@
     "util": {
       "path": "util",
       "content": "(function() {\n  var __slice = [].slice;\n\n  module.exports = {\n    extend: function() {\n      var name, source, sources, target, _i, _len;\n      target = arguments[0], sources = 2 <= arguments.length ? __slice.call(arguments, 1) : [];\n      for (_i = 0, _len = sources.length; _i < _len; _i++) {\n        source = sources[_i];\n        for (name in source) {\n          target[name] = source[name];\n        }\n      }\n      return target;\n    }\n  };\n\n}).call(this);\n\n//# sourceURL=util.coffee",
+      "type": "blob"
+    },
+    "extensions": {
+      "path": "extensions",
+      "content": "(function() {\n  require(\"./array\");\n\n  require(\"./function\");\n\n  require(\"./number\");\n\n  require(\"./string\");\n\n}).call(this);\n\n//# sourceURL=extensions.coffee",
       "type": "blob"
     }
   },
