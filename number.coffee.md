@@ -4,7 +4,7 @@ Returns the absolute value of this number.
 >     #! example
 >     (-4).abs()
 
-Returns the mathematical ceiling of this number. The number truncated to the 
+Returns the mathematical ceiling of this number. The number truncated to the
 nearest integer of greater than or equal value.
 
 >     #! example
@@ -17,7 +17,7 @@ nearest integer of greater than or equal value.
 
 ---
 
-Returns the mathematical floor of this number. The number truncated to the 
+Returns the mathematical floor of this number. The number truncated to the
 nearest integer of less than or equal value.
 
 >     #! example
@@ -87,13 +87,13 @@ Returns a number whose value is limited to the given range.
 
 A mod method useful for array wrapping. The range of the function is
 constrained to remain in bounds of array indices.
-  
+
       mod: (base) ->
         result = this % base;
-    
+
         if result < 0 && base > 0
           result += base
-    
+
         return result
 
 >     #! example
@@ -141,10 +141,10 @@ current iteration as a parameter: 0 on first call, 1 on the second call, etc.
 
       times: (iterator, context) ->
         i = -1
-    
+
         while ++i < this
           iterator.call context, i
-    
+
         return i
 
 >     #! example
@@ -181,7 +181,7 @@ Convert a number to an amount of rotations.
       Object.defineProperty Number::, 'rotations',
         get: ->
           this * Math.TAU
-    
+
     unless 1.rotation
       Object.defineProperty Number::, 'rotation',
         get: ->
@@ -198,7 +198,7 @@ Convert a number to an amount of rotations.
       Object.defineProperty Number.prototype, 'turns',
         get: ->
           this * Math.TAU
-    
+
     unless 1.turn
       Object.defineProperty Number.prototype, 'turn',
         get: ->
@@ -215,7 +215,7 @@ Convert a number to an amount of degrees.
       Object.defineProperty Number::, 'degrees',
         get: ->
           this * Math.TAU / 360
-    
+
     unless 1.degree
       Object.defineProperty Number::, 'degree',
         get: ->
