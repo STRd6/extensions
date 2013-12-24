@@ -21,7 +21,7 @@ window["distri/extensions:v0.2.0"]({
     "extensions.coffee.md": {
       "path": "extensions.coffee.md",
       "mode": "100644",
-      "content": "Extensions\n==========\n\n    require \"./array\"\n    require \"./function\"\n    require \"./number\"\n    require \"./string\"\n",
+      "content": "Extensions\n==========\n\nExtend built in prototypes with additional behavior.\n\n    require \"./array\"\n    require \"./function\"\n    require \"./number\"\n    require \"./string\"\n",
       "type": "blob"
     },
     "function.coffee.md": {
