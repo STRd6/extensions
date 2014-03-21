@@ -51,7 +51,10 @@ Returns this number rounded to the nearest integer.
       "round"
     ].forEach (method) ->
       Number::[method] = ->
-        Math[method](this)
+        if isNaN(this)
+          throw "Can't #{method} NaN"
+        else
+          Math[method](this)
 
     {extend} = require "./util"
 
@@ -91,6 +94,9 @@ A mod method useful for array wrapping. The range of the function is
 constrained to remain in bounds of array indices.
 
       mod: (base) ->
+        if isNaN(this)
+          throw "Can't mod NaN"
+
         result = this % base;
 
         if result < 0 && base > 0
@@ -110,6 +116,8 @@ Get the sign of this number as an integer (1, -1, or 0).
           1
         else if this < 0
           -1
+        else if isNaN(this)
+          throw "Can't get sign of NaN"
         else
           0
 
