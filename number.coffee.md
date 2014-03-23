@@ -97,7 +97,7 @@ constrained to remain in bounds of array indices.
         if isNaN(this)
           throw "Can't mod NaN"
 
-        result = this % base;
+        result = this % base
 
         if result < 0 && base > 0
           result += base
