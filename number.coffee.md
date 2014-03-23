@@ -60,6 +60,17 @@ Returns this number rounded to the nearest integer.
 
     extend Number.prototype,
 
+Approach a target number from the current number and a maximum delta.
+
+      approach: (target, maxDelta) ->
+        this + (target - this).clamp(-maxDelta, maxDelta)
+
+Approach a target number from the current number and a ratio of that number to 
+approach the target by.
+
+      approachByRatio: (target, ratio) ->
+        @approach(target, this * ratio)
+
 Get a bunch of points equally spaced around the unit circle.
 
       circularPoints: ->
