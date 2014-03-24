@@ -17,6 +17,14 @@ describe "Number", ->
     equals (-1.2).abs(), 1.2, "(-1.2).abs() equals 1.2"
     equals 0.abs(), 0, "(0).abs() equals 0"
 
+  test "#approach", ->
+    v = 5.approach(6, 0.5)
+    assert.equal v, 5.5, "#{v} == 5.5"
+
+  test "#approachByRatio", ->
+    assert.equal 1.approachByRatio(2, 1), 2
+    assert.equal 100.approachByRatio(200, 0.10), 110
+
   test "#ceil", ->
     equals 4.9.ceil(), 5, "(4.9).floor() equals 5"
     equals 4.2.ceil(), 5, "(4.2).ceil() equals 5"
