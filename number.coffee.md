@@ -65,7 +65,7 @@ Approach a target number from the current number and a maximum delta.
       approach: (target, maxDelta) ->
         this + (target - this).clamp(-maxDelta, maxDelta)
 
-Approach a target number from the current number and a ratio of that number to 
+Approach a target number from the current number and a ratio of that number to
 approach the target by.
 
       approachByRatio: (target, ratio) ->
