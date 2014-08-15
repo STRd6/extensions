@@ -159,7 +159,10 @@ nearest integer of less than or equal value.</p>
   <span class="string">"round"</span>
 ].forEach (method) -&gt;
   Number::[method] = -&gt;
-    Math[method](<span class="keyword">this</span>)
+    <span class="keyword">if</span> isNaN(<span class="keyword">this</span>)
+      <span class="keyword">throw</span> <span class="string">"Can't <span class="subst">#{method}</span> NaN"</span>
+    <span class="keyword">else</span>
+      Math[method](<span class="keyword">this</span>)
 
 {extend} = require <span class="string">"./util"</span>
 
@@ -173,6 +176,35 @@ extend Number.prototype,</code></pre>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
+              <p>Approach a target number from the current number and a maximum delta.</p>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">  approach: (target, maxDelta) -&gt;
+    <span class="keyword">this</span> + (target - <span class="keyword">this</span>).clamp(-maxDelta, maxDelta)</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Approach a target number from the current number and a ratio of that number to
+approach the target by.</p>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">  approachByRatio: (target, ratio) -&gt;
+    <span class="property">@approach</span>(target, <span class="keyword">this</span> * ratio)</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
               <p>Get a bunch of points equally spaced around the unit circle.</p>
 
             </div>
@@ -185,10 +217,10 @@ extend Number.prototype,</code></pre>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-12">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <blockquote>
 <pre><code>#! example
@@ -203,10 +235,10 @@ extend Number.prototype,</code></pre>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-13">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Returns a number whose value is limited to the given range.</p>
 
@@ -224,44 +256,6 @@ extend Number.prototype,</code></pre>
         </li>
         
         
-        <li id="section-12">
-            <div class="annotation">
-              <div class="pilwrap">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <blockquote>
-<pre><code>#! example
-512.clamp(0, 255)</code></pre>
-</blockquote>
-<hr>
-
-            </div>
-            <div class="content"><pre><code class="lang-coffeescript">
-</code></pre>
-</div>
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              <div class="pilwrap">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>A mod method useful for array wrapping. The range of the function is
-constrained to remain in bounds of array indices.</p>
-
-            </div>
-            <div class="content"><pre><code class="lang-coffeescript">  mod: (base) -&gt;
-    result = <span class="keyword">this</span> % base;
-
-    <span class="keyword">if</span> result &lt; <span class="number">0</span> &amp;&amp; base &gt; <span class="number">0</span>
-      result += base
-
-    <span class="keyword">return</span> result</code></pre>
-</div>
-        </li>
-        
-        
         <li id="section-14">
             <div class="annotation">
               <div class="pilwrap">
@@ -269,7 +263,7 @@ constrained to remain in bounds of array indices.</p>
               </div>
               <blockquote>
 <pre><code>#! example
-(-1).mod(5)</code></pre>
+512.clamp(0, 255)</code></pre>
 </blockquote>
 <hr>
 
@@ -285,16 +279,20 @@ constrained to remain in bounds of array indices.</p>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Get the sign of this number as an integer (1, -1, or 0).</p>
+              <p>A mod method useful for array wrapping. The range of the function is
+constrained to remain in bounds of array indices.</p>
 
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">  sign: -&gt;
-    <span class="keyword">if</span> <span class="keyword">this</span> &gt; <span class="number">0</span>
-      <span class="number">1</span>
-    <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">this</span> &lt; <span class="number">0</span>
-      -<span class="number">1</span>
-    <span class="keyword">else</span>
-      <span class="number">0</span></code></pre>
+            <div class="content"><pre><code class="lang-coffeescript">  mod: (base) -&gt;
+    <span class="keyword">if</span> isNaN(<span class="keyword">this</span>)
+      <span class="keyword">throw</span> <span class="string">"Can't mod NaN"</span>
+
+    result = <span class="keyword">this</span> % base
+
+    <span class="keyword">if</span> result &lt; <span class="number">0</span> &amp;&amp; base &gt; <span class="number">0</span>
+      result += base
+
+    <span class="keyword">return</span> result</code></pre>
 </div>
         </li>
         
@@ -306,7 +304,7 @@ constrained to remain in bounds of array indices.</p>
               </div>
               <blockquote>
 <pre><code>#! example
-5.sign()</code></pre>
+(-1).mod(5)</code></pre>
 </blockquote>
 <hr>
 
@@ -322,11 +320,18 @@ constrained to remain in bounds of array indices.</p>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>Returns true if this number is even (evenly divisible by 2).</p>
+              <p>Get the sign of this number as an integer (1, -1, or 0).</p>
 
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">  even: -&gt;
-    <span class="property">@mod</span>(<span class="number">2</span>) <span class="keyword">is</span> <span class="number">0</span></code></pre>
+            <div class="content"><pre><code class="lang-coffeescript">  sign: -&gt;
+    <span class="keyword">if</span> <span class="keyword">this</span> &gt; <span class="number">0</span>
+      <span class="number">1</span>
+    <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">this</span> &lt; <span class="number">0</span>
+      -<span class="number">1</span>
+    <span class="keyword">else</span> <span class="keyword">if</span> isNaN(<span class="keyword">this</span>)
+      <span class="keyword">throw</span> <span class="string">"Can't get sign of NaN"</span>
+    <span class="keyword">else</span>
+      <span class="number">0</span></code></pre>
 </div>
         </li>
         
@@ -338,7 +343,7 @@ constrained to remain in bounds of array indices.</p>
               </div>
               <blockquote>
 <pre><code>#! example
-2.even()</code></pre>
+5.sign()</code></pre>
 </blockquote>
 <hr>
 
@@ -354,11 +359,11 @@ constrained to remain in bounds of array indices.</p>
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Returns true if this number is odd (has remainder of 1 when divided by 2).</p>
+              <p>Returns true if this number is even (evenly divisible by 2).</p>
 
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">  odd: -&gt;
-    <span class="property">@mod</span>(<span class="number">2</span>) <span class="keyword">is</span> <span class="number">1</span></code></pre>
+            <div class="content"><pre><code class="lang-coffeescript">  even: -&gt;
+    <span class="property">@mod</span>(<span class="number">2</span>) <span class="keyword">is</span> <span class="number">0</span></code></pre>
 </div>
         </li>
         
@@ -370,7 +375,7 @@ constrained to remain in bounds of array indices.</p>
               </div>
               <blockquote>
 <pre><code>#! example
-3.odd()</code></pre>
+2.even()</code></pre>
 </blockquote>
 <hr>
 
@@ -385,6 +390,38 @@ constrained to remain in bounds of array indices.</p>
             <div class="annotation">
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Returns true if this number is odd (has remainder of 1 when divided by 2).</p>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">  odd: -&gt;
+    <span class="property">@mod</span>(<span class="number">2</span>) <span class="keyword">is</span> <span class="number">1</span></code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <blockquote>
+<pre><code>#! example
+3.odd()</code></pre>
+</blockquote>
+<hr>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">
+</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Calls iterator the specified number of times, passing in the number of the
 current iteration as a parameter: 0 on first call, 1 on the second call, etc.</p>
@@ -401,10 +438,10 @@ current iteration as a parameter: 0 on first call, 1 on the second call, etc.</p
         </li>
         
         
-        <li id="section-22">
+        <li id="section-24">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <blockquote>
 <pre><code>#! example
@@ -424,10 +461,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-25">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Returns the the nearest grid resolution less than or equal to the number.</p>
 
@@ -438,10 +475,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-26">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <blockquote>
 <pre><code>#! example
@@ -456,10 +493,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-27">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               
             </div>
@@ -474,10 +511,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-28">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>Convert a number to an amount of rotations.</p>
 
@@ -495,10 +532,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-29">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <blockquote>
 <pre><code>#! example
@@ -513,10 +550,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-30">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Convert a number to an amount of rotations.</p>
 
@@ -534,10 +571,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-31">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <blockquote>
 <pre><code>#! example
@@ -552,10 +589,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Convert a number to an amount of degrees.</p>
 
@@ -573,10 +610,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <blockquote>
 <pre><code>#! example
@@ -591,10 +628,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <h2 id="extra">Extra</h2>
 
@@ -605,10 +642,10 @@ output</code></pre>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               <div class="pilwrap">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>The mathematical circle constant of 1 turn.</p>
 
@@ -619,17 +656,141 @@ output</code></pre>
         
     </ul>
   </div>
-  <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script>
-<script src="http://strd6.github.io/require/v0.2.2.js"></script><script>
-  $.ajax({
-    url: "http://strd6.github.io/interactive/v0.8.1.jsonp",
-    dataType: "jsonp",
-    jsonpCallback: "STRd6/interactive:v0.8.1",
-    cache: true
-  }).then(function(PACKAGE) {
-    Require.generateFor(PACKAGE)("./" + PACKAGE.entryPoint)
-  })
+  <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script><script>
+  (function() {
+  var ErrorReporter, bindUpdates, createEditor, exec, findInteractiveElements, readShebang, runners;
+
+  createEditor = function(code, shebang, section) {
+    var annotationElement, contentElement, editorElement, exampleSection, runtimeElement;
+    exampleSection = $("<li>", {
+      "class": "example"
+    });
+    annotationElement = $("<div>", {
+      "class": "annotation"
+    });
+    editorElement = $("<textarea>", {
+      "class": "annotation",
+      text: code
+    });
+    contentElement = $("<div>", {
+      "class": "content"
+    });
+    runtimeElement = $("<div>", {
+      "class": "output"
+    });
+    contentElement.append(runtimeElement);
+    annotationElement.append(editorElement);
+    exampleSection.append(annotationElement);
+    exampleSection.append(contentElement);
+    section.after(exampleSection);
+    return bindUpdates(shebang, editorElement, runtimeElement);
+  };
+
+  bindUpdates = function(shebang, editorElement, runtimeElement) {
+    return editorElement.on("keyup", function() {
+      var e, report, source;
+      report = ErrorReporter(editorElement);
+      source = editorElement.val();
+      try {
+        runners[shebang]({
+          editorElement: editorElement,
+          source: source,
+          runtimeElement: runtimeElement
+        });
+        return report.clear();
+      } catch (_error) {
+        e = _error;
+        return report(e);
+      }
+    });
+  };
+
+  readShebang = function(source) {
+    var match;
+    if (match = source.match(/^\#\! (.*)\n/)) {
+      return match[1];
+    }
+  };
+
+  ErrorReporter = function(editor) {
+    var reporter;
+    reporter = function(error) {
+      var errorParagraph;
+      if (editor.next().is("p.error")) {
+        return editor.next().text(error);
+      } else {
+        errorParagraph = $("<p>", {
+          "class": "error",
+          text: error.toString()
+        });
+        return editor.after(errorParagraph);
+      }
+    };
+    reporter.clear = function() {
+      if (editor.next().is("p.error")) {
+        return editor.next().remove();
+      }
+    };
+    return reporter;
+  };
+
+  findInteractiveElements = function() {
+    return $("blockquote > pre > code").each(function() {
+      var blockQuoteElement, code, codeElement, sectionElement, shebang;
+      codeElement = $(this);
+      code = codeElement.text();
+      if (shebang = readShebang(code)) {
+        if (!runners[shebang]) {
+          return;
+        }
+        code = code.split("\n").slice(1).join("\n");
+        blockQuoteElement = codeElement.parent().parent();
+        sectionElement = blockQuoteElement.parent().parent();
+        blockQuoteElement.remove();
+        return createEditor(code, shebang, sectionElement);
+      }
+    });
+  };
+
+  runners = {};
+
+  (typeof window !== "undefined" && window !== null ? window : global).Interactive = {
+    register: function(name, runner) {
+      runners[name] = runner;
+      findInteractiveElements();
+      return $('#container').on('keyup', 'textarea', function() {
+        $(this).height(0);
+        return $(this).height(this.scrollHeight);
+      }).find('textarea').keyup();
+    }
+  };
+
+  exec = function(_arg) {
+    var code, editorElement, runtimeElement, source;
+    source = _arg.source, code = _arg.code, editorElement = _arg.editorElement, runtimeElement = _arg.runtimeElement;
+    runtimeElement.remove();
+    editorElement.replaceWith($("<pre>", {
+      text: source
+    }));
+    return setTimeout(function() {
+      return Function(code)();
+    }, 0);
+  };
+
+  $(function() {
+    Interactive.register("setup", function(params) {
+      params.code = CoffeeScript.compile(params.source);
+      return exec(params);
+    });
+    return Interactive.register("setup-js", function(params) {
+      params.code = params.source;
+      return exec(params);
+    });
+  });
+
+}).call(this);
+
 </script><script src="package.js"></script>
 </body>
 </html>
